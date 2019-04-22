@@ -9,9 +9,20 @@ typedef string ID
 
 exception ListNotFound {}
 
-enum Command {
+enum CommandType {
     CREATE
     DELETE
+}
+
+union CommandBody {
+    Template
+    TemplateReference
+}
+
+// Модель комманды
+struct Command {
+    1: required CommandType commandType
+    2: required CommandBody commandBody
 }
 
 // Модель шаблона
@@ -20,8 +31,6 @@ struct Template {
     1: required ID id
     // Описние правил на языке fraudo
     2: required binary template
-    // Комманда изменения шаблона
-    3: required Command command
 }
 
 // Модель связки шаблона с проверяемым субъектом
@@ -34,6 +43,4 @@ struct TemplateReference {
     3: required ID template_id
     // Признак глобальности (при значении true поля party_id и shop_id игнорируются)
     4: required bool is_global = false
-    // Комманда изменения в списке
-    5: required Command command
 }
