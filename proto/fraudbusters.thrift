@@ -15,8 +15,8 @@ enum CommandType {
 }
 
 union CommandBody {
-    Template
-    TemplateReference
+    1: Template template;
+    2: TemplateReference reference;
 }
 
 // Модель комманды
