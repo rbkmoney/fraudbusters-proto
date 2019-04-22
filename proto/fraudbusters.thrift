@@ -34,4 +34,6 @@ struct TemplateReference {
     3: required ID template_id
     // Признак глобальности (при значении true поля party_id и shop_id игнорируются)
     4: required bool is_global = false
+    // Комманда изменения в списке
+    5: required Command command
 }
