@@ -21,15 +21,15 @@ union CommandBody {
 
 // Модель комманды
 struct Command {
-    1: required CommandType commandType
-    2: required CommandBody commandBody
+    1: required CommandType command_type
+    2: required CommandBody command_body
 }
 
 // Модель шаблона
 struct Template {
     // Уникальный идентификатор шаблона
     1: required ID id
-    // Описние правил на языке fraudo
+    // Описание правил на языке fraudo
     2: required binary template
 }
 
