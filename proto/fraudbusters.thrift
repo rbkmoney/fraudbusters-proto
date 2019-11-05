@@ -55,7 +55,7 @@ struct P2PReference {
     1: optional ID identity_id
     // Идентификатор привязываемого шаблона
     2: required ID template_id
-    // Признак глобальности (при значении true поля party_id и shop_id игнорируются)
+    // Признак глобальности (при значении true поля identity_id игнорируются)
     3: required bool is_global = false
 }
 
