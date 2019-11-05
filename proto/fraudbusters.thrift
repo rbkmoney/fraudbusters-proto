@@ -19,6 +19,8 @@ union CommandBody {
     2: TemplateReference reference;
     3: GroupReference group_reference;
     4: Group group;
+    5: P2PGroupReference p2p_group_reference;
+    6: P2PReference p2p_reference;
 }
 
 // Модель комманды
@@ -48,6 +50,16 @@ struct TemplateReference {
 }
 
 // Модель связки шаблона с проверяемым субъектом
+struct P2PReference {
+    // Идентификатор кошелька
+    1: optional ID identity_id
+    // Идентификатор привязываемого шаблона
+    2: required ID template_id
+    // Признак глобальности (при значении true поля identity_id игнорируются)
+    3: required bool is_global = false
+}
+
+// Модель связки шаблона с проверяемым субъектом
 struct GroupReference {
     // Идентификатор party
     1: optional ID party_id
@@ -55,6 +67,15 @@ struct GroupReference {
     2: optional ID shop_id
     // Идентификатор привязываемого шаблона
     3: required ID group_id
+}
+
+
+// Модель связки шаблона с проверяемым субъектом
+struct P2PGroupReference {
+    // Идентификатор кошелька
+    1: optional ID identity_id
+    // Идентификатор привязываемого шаблона
+    2: required ID group_id
 }
 
 // Модель группы шаблонов
