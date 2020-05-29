@@ -37,16 +37,31 @@ struct Template {
     2: required binary template
 }
 
+struct MerchantType {
+    1: required ID party_id
+    2: optional ID shop_id
+}
+
+struct GlobalType {}
+struct DefaultType {}
+
+/**
+* MerchantType - привязка к конкретному магазину
+* GlobalType - привязка к общему для всех магазинов шаблону
+* DefaultType - привязка для только активированных магазинов до момента заведения конкретной привязки MerchantType
+**/
+union TemplateReferenceType {
+    1: MerchantType merchant_type
+    2: GlobalType global_type
+    3: DefaultType default_type
+}
+
 // Модель связки шаблона с проверяемым субъектом
 struct TemplateReference {
-    // Идентификатор party
-    1: optional ID party_id
-    // Идентификатор магазина
-    2: optional ID shop_id
     // Идентификатор привязываемого шаблона
-    3: required ID template_id
-    // Признак глобальности (при значении true поля party_id и shop_id игнорируются)
-    4: required bool is_global = false
+    1: required ID template_id
+    // Тип связки
+    2: required TemplateReferenceType type
 }
 
 // Модель связки шаблона с проверяемым субъектом
