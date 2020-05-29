@@ -51,9 +51,9 @@ struct DefaultType {}
 * DefaultType - привязка для только активированных магазинов до момента заведения конкретной привязки MerchantType
 **/
 union TemplateReferenceType {
-    1: MerchantType merchant
-    2: GlobalType global
-    3: DefaultType default
+    1: MerchantType merchant_type
+    2: GlobalType global_type
+    3: DefaultType default_type
 }
 
 // Модель связки шаблона с проверяемым субъектом
