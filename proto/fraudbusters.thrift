@@ -39,7 +39,7 @@ struct Template {
 
 struct MerchantType {
     1: required ID party_id
-    2: required ID shop_id
+    2: optional ID shop_id
 }
 
 struct GlobalType {}
