@@ -92,14 +92,15 @@ struct PriorityId {
     2: required ID id
 }
 
-// Модель ответа валидации, errors пустой если все темплейты валидные
+// Модель ответа валидации, errors пустой если все темплейты валидные, приходят только проблемные темплейты
 struct ValidateTemplateResponse {
     1: optional list<TemplateValidateError> errors
 }
 
+// Модель ошибки у каждого темплейта может быть несколько ошибок
 struct TemplateValidateError {
     1: required ID id
-    2: optional string reason
+    2: optional list<string> reason
 }
 
 /**
