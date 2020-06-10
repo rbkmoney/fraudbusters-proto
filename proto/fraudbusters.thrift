@@ -104,9 +104,21 @@ struct TemplateValidateError {
 }
 
 /**
-* Интерфейс для проверки шаблонов
+* Интерфейс для проверки шаблонов FraudoPayment
 */
-service FraudbustersValidateService {
+service PaymentValidateService {
+
+    /**
+    * Проверяет компиляцию шаблонов на актуальной версии языка
+    **/
+    ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
+
+}
+
+/**
+* Интерфейс для проверки шаблонов FraudoP2P
+*/
+service P2PValidateService {
 
     /**
     * Проверяет компиляцию шаблонов на актуальной версии языка
