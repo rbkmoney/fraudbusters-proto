@@ -7,8 +7,6 @@ namespace erlang fraudbusters
 
 typedef string ID
 
-exception ListNotFound {}
-
 enum CommandType {
     CREATE
     DELETE
@@ -94,3 +92,25 @@ struct PriorityId {
     2: required ID id
 }
 
+// Модель ответа валидации, errors пустой если все темплейты валидные, приходят только проблемные темплейты
+struct ValidateTemplateResponse {
+    1: optional list<TemplateValidateError> errors
+}
+
+// Модель ошибки у каждого темплейта может быть несколько ошибок
+struct TemplateValidateError {
+    1: required ID id
+    2: optional list<string> reason
+}
+
+/**
+* Интерфейс для проверки шаблонов
+*/
+service FraudbustersValidateService {
+
+    /**
+    * Проверяет компиляцию шаблонов на актуальной версии языка
+    **/
+    ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
+
+}
