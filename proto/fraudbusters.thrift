@@ -107,7 +107,7 @@ struct TemplateValidateError {
 }
 
 enum PaymentStatus {
-    captured,
+    captured
     failed
 }
 
