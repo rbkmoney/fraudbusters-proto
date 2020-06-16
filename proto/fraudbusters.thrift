@@ -106,30 +106,27 @@ struct TemplateValidateError {
     2: optional list<string> reason
 }
 
-enum FraudStatus {
-    accept
-    three_ds
-    high_risk
-    decline
-    notify
+enum PaymentStatus {
+    captured,
+    failed
 }
 
 struct FraudInfo {
-    1: required FraudStatus status
-    2: required ID tempalte_id
-    3: optional string  description
+    1: required ID tempalte_id
+    2: optional string  description
 }
 
 struct FraudPayment {
-    1: required base.ID id
-    2: required base.Timestamp event_time
-    3: required ID party_id
-    4: required ID shop_id
-    5: required domain.Cash cost
-    6: required domain.Payer payer
-    7: optional string rrn
-    8: optional domain.PaymentRoute route
-    9: required FraudInfo fraud_info
+    1:  required ID id
+    2:  required base.Timestamp last_change_time
+    3:  required ID party_id
+    4:  required ID shop_id
+    5:  required domain.Cash cost
+    6:  required domain.Payer payer
+    7:  required PaymentStatus status
+    8:  optional string rrn
+    9:  optional domain.PaymentRoute route
+    10: required FraudInfo fraud_info
 }
 
 /**
