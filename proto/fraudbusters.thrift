@@ -1,3 +1,6 @@
+include 'base.thrift'
+include 'domain.thrift'
+
 /**
  * Сервис поиска мошеннических операций.
  */
@@ -103,22 +106,47 @@ struct TemplateValidateError {
     2: optional list<string> reason
 }
 
+enum PaymentStatus {
+    captured
+    failed
+}
+
+struct FraudInfo {
+    1: required ID tempalte_id
+    2: optional string  description
+}
+
+struct FraudPayment {
+    1:  required ID id
+    2:  required base.Timestamp last_change_time
+    3:  required ID party_id
+    4:  required ID shop_id
+    5:  required domain.Cash cost
+    6:  required domain.Payer payer
+    7:  required PaymentStatus status
+    8:  optional string rrn
+    9:  optional domain.PaymentRoute route
+    10: required FraudInfo fraud_info
+}
+
 /**
-* Интерфейс для проверки шаблонов FraudoPayment
+* Интерфейс для управления FraudoPayment
 */
-service PaymentValidateService {
+service PaymentService {
 
     /**
     * Проверяет компиляцию шаблонов на актуальной версии языка
     **/
     ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
 
+    void insertFraudPayments(1: list<FraudPayment> payments)
+
 }
 
 /**
-* Интерфейс для проверки шаблонов FraudoP2P
+* Интерфейс для управления FraudoP2P
 */
-service P2PValidateService {
+service P2PService {
 
     /**
     * Проверяет компиляцию шаблонов на актуальной версии языка
