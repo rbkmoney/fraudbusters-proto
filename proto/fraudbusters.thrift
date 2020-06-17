@@ -147,7 +147,6 @@ struct AdditionalInfo {
     1:  optional string ip
     2:  optional string fingerprint
     3:  optional string email
-    4:  optional string payment_country
 }
 
 struct MerchantInfo {
