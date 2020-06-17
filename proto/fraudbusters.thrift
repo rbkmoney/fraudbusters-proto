@@ -163,8 +163,8 @@ union ReferenceInfo {
 }
 
 struct Error {
-    1:  optional string error_reason
-    2:  optional string error_code
+    1:  required string error_reason
+    2:  required string error_code
 }
 
 struct Payment {
