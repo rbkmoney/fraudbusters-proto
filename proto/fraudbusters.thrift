@@ -138,12 +138,12 @@ struct BankCard {
 }
 
 struct ProviderInfo {
-    1: optional string country
-    2: required ID provider_id
-    3: required ID terminal_id
+    1: required ID provider_id
+    2: required ID terminal_id
+    3: optional string country
 }
 
-struct AdditionalInfo {
+struct ClientInfo {
     1:  optional string ip
     2:  optional string fingerprint
     3:  optional string email
@@ -176,7 +176,7 @@ struct Payment {
     6:  required ProviderInfo provider_info
     7:  required PaymentStatus status
     8:  optional Error error
-    9:  required AdditionalInfo additional_info
+    9:  required ClientInfo client_info
 }
 
 enum RefundStatus {
@@ -194,7 +194,7 @@ struct Refund {
     7:  required ProviderInfo provider_info
     8:  required RefundStatus status
     9:  optional Error error
-    10:  required AdditionalInfo additional_info
+    10:  required ClientInfo client_info
 }
 
 enum ChargebackStatus {
@@ -221,7 +221,7 @@ struct Chargeback {
     8:  required ChargebackStatus status
     9:  required ChargebackCategory category
     10:  required string chargeback_code
-    11:  required AdditionalInfo additional_info
+    11:  required ClientInfo client_info
 }
 
 /**
