@@ -218,7 +218,7 @@ struct Chargeback {
     7:  required ProviderInfo provider_info
     8:  required ChargebackStatus status
     9:  required ChargebackCategory category
-    10:  required string chargebackCode
+    10:  required string chargeback_code
     11:  required AdditionalInfo additional_info
 }
 
