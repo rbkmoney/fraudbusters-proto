@@ -252,6 +252,4 @@ service P2PService {
     **/
     ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
 
-    void insertP2POperations(1: list<FraudPayment> payments)
-
 }
