@@ -107,6 +107,7 @@ struct TemplateValidateError {
 }
 
 enum PaymentStatus {
+    processed
     captured
     failed
 }
@@ -129,6 +130,98 @@ struct FraudPayment {
     10: required FraudInfo fraud_info
 }
 
+struct BankCard {
+    1: required string bin
+    2: required string masked_pan
+    3: required string card_token
+    4: required string payment_system
+}
+
+struct ProviderInfo {
+    1: optional string country
+    2: required string provider_id
+    3: required string terminal
+}
+
+struct AdditionalInfo {
+    1:  optional string ip
+    2:  optional string fingerprint
+    3:  optional string email
+    4:  optional string payment_country
+}
+
+struct MerchantInfo {
+    1:  required ID party_id
+    2:  required ID shop_id
+}
+
+union PaymentTool {
+    1: BankCard bank_card
+}
+
+union ReferenceInfo {
+    1: MerchantInfo merchant_info
+}
+
+struct Payment {
+    1:  required ID id
+    2:  required base.Timestamp timestamp
+    3:  required ReferenceInfo reference_info
+    4:  required PaymentTool payment_tool
+    5:  required domain.Cash cost
+    6:  required ProviderInfo provider_info
+    7:  required PaymentStatus status
+    8:  optional string error_reason
+    9:  optional string error_code
+    10:  required AdditionalInfo additional_info
+}
+
+enum RefundStatus {
+    succeeded
+    failed
+}
+
+struct Refund {
+    1:  required ID id
+    2:  required ID payment_id
+    3:  required base.Timestamp timestamp
+    4:  required ReferenceInfo reference_info
+    5:  required PaymentTool payment_tool
+    6:  required domain.Cash cost
+    7:  required ProviderInfo provider_info
+    8:  required RefundStatus status
+    9:  optional string error_reason
+    10:  optional string error_code
+    11:  required AdditionalInfo additional_info
+}
+
+enum ChargebackStatus {
+    accepted
+    rejected
+    cancelled
+}
+
+enum ChargebackCategory {
+    fraud
+    dispute
+    authorisation
+    processing_error
+}
+
+struct Chargeback {
+    1:  required ID id
+    2:  required ID payment_id
+    3:  required base.Timestamp timestamp
+    4:  required ReferenceInfo reference_info
+    5:  required PaymentTool payment_tool
+    6:  required domain.Cash cost
+    7:  required ProviderInfo provider_info
+    8:  required ChargebackStatus status
+    9:  required ChargebackCategory category
+    10:  required string chargebackCode
+    11:  required AdditionalInfo additional_info
+}
+
 /**
 * Интерфейс для управления FraudoPayment
 */
@@ -141,6 +234,12 @@ service PaymentService {
 
     void insertFraudPayments(1: list<FraudPayment> payments)
 
+    void insertPayments(1: list<Payment> payments)
+
+    void insertRefunds(1: list<Refund> refunds)
+
+    void insertChargebacks(1: list<Chargeback> chargebacks)
+
 }
 
 /**
@@ -152,5 +251,7 @@ service P2PService {
     * Проверяет компиляцию шаблонов на актуальной версии языка
     **/
     ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
+
+    void insertP2POperations(1: list<FraudPayment> payments)
 
 }
