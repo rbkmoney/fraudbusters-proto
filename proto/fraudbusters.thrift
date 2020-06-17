@@ -164,7 +164,7 @@ union ReferenceInfo {
 
 struct Payment {
     1:  required ID id
-    2:  required base.Timestamp timestamp
+    2:  required base.Timestamp event_time
     3:  required ReferenceInfo reference_info
     4:  required PaymentTool payment_tool
     5:  required domain.Cash cost
@@ -183,7 +183,7 @@ enum RefundStatus {
 struct Refund {
     1:  required ID id
     2:  required ID payment_id
-    3:  required base.Timestamp timestamp
+    3:  required base.Timestamp event_time
     4:  required ReferenceInfo reference_info
     5:  required PaymentTool payment_tool
     6:  required domain.Cash cost
@@ -210,7 +210,7 @@ enum ChargebackCategory {
 struct Chargeback {
     1:  required ID id
     2:  required ID payment_id
-    3:  required base.Timestamp timestamp
+    3:  required base.Timestamp event_time
     4:  required ReferenceInfo reference_info
     5:  required PaymentTool payment_tool
     6:  required domain.Cash cost
