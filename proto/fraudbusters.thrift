@@ -225,6 +225,14 @@ struct Chargeback {
 }
 
 /**
+* Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
+*/
+exception InsertionException {
+    1: string id
+    2: string reason
+}
+
+/**
 * Интерфейс для управления FraudoPayment
 */
 service PaymentService {
@@ -237,10 +245,13 @@ service PaymentService {
     void insertFraudPayments(1: list<FraudPayment> payments)
 
     void insertPayments(1: list<Payment> payments)
+    throws (1: InsertionException ex1)
 
     void insertRefunds(1: list<Refund> refunds)
+    throws (1: InsertionException ex1)
 
     void insertChargebacks(1: list<Chargeback> chargebacks)
+    throws (1: InsertionException ex1)
 
 }
 
