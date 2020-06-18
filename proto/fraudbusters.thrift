@@ -228,7 +228,7 @@ struct Chargeback {
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
 */
 exception InsertionException {
-    1: string id
+    1: ID id
     2: string reason
 }
 
