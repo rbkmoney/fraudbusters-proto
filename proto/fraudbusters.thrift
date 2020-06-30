@@ -130,13 +130,6 @@ struct FraudPayment {
     10: required FraudInfo fraud_info
 }
 
-struct BankCard {
-    1: required string bin
-    2: required string masked_pan
-    3: required string card_token
-    4: required string payment_system
-}
-
 struct ProviderInfo {
     1: required ID provider_id
     2: required ID terminal_id
