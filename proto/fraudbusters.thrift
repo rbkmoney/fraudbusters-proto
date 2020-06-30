@@ -154,10 +154,6 @@ struct MerchantInfo {
     2:  required ID shop_id
 }
 
-union PaymentTool {
-    1: BankCard bank_card
-}
-
 union ReferenceInfo {
     1: MerchantInfo merchant_info
 }
@@ -171,7 +167,7 @@ struct Payment {
     1:  required ID id
     2:  required base.Timestamp event_time
     3:  required ReferenceInfo reference_info
-    4:  required PaymentTool payment_tool
+    4:  required domain.PaymentTool payment_tool
     5:  required domain.Cash cost
     6:  required ProviderInfo provider_info
     7:  required PaymentStatus status
@@ -189,7 +185,7 @@ struct Refund {
     2:  required ID payment_id
     3:  required base.Timestamp event_time
     4:  required ReferenceInfo reference_info
-    5:  required PaymentTool payment_tool
+    5:  required domain.PaymentTool payment_tool
     6:  required domain.Cash cost
     7:  required ProviderInfo provider_info
     8:  required RefundStatus status
@@ -215,7 +211,7 @@ struct Chargeback {
     2:  required ID payment_id
     3:  required base.Timestamp event_time
     4:  required ReferenceInfo reference_info
-    5:  required PaymentTool payment_tool
+    5:  required domain.PaymentTool payment_tool
     6:  required domain.Cash cost
     7:  required ProviderInfo provider_info
     8:  required ChargebackStatus status
