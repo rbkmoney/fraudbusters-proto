@@ -119,9 +119,8 @@ struct FraudInfo {
 
 struct FraudPayment {
     1:  required ID id
-    2:  required base.Timestamp last_change_time
-    3:  required ID party_id
-    4:  required ID shop_id
+    2:  required base.Timestamp event_time
+    3:  required ReferenceInfo reference_info 
     5:  required domain.Cash cost
     6:  required domain.Payer payer
     7:  required PaymentStatus status
