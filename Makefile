@@ -10,7 +10,7 @@ TEMPLATES_PATH := .
 SERVICE_NAME := fraudbusters-proto
 
 # Build image tag to be used
-BUILD_IMAGE_TAG := fcf116dd775cc2e91bffb6a36835754e3f2d5321
+BUILD_IMAGE_TAG := b04c5291d101132e53e578d96e1628d2e6dab0c0
 CALL_ANYWHERE := \
 	all submodules compile clean distclean
 
