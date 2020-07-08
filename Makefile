@@ -12,8 +12,7 @@ SERVICE_NAME := fraudbusters-proto
 # Build image tag to be used
 BUILD_IMAGE_TAG := fcf116dd775cc2e91bffb6a36835754e3f2d5321
 CALL_ANYWHERE := \
-	all submodules compile clean distclean \
-	java.compile java.deploy
+	all submodules compile clean distclean
 
 CALL_W_CONTAINER := $(CALL_ANYWHERE)
 
@@ -40,41 +39,4 @@ distclean:
 	$(REBAR) clean -a
 	rm -rfv _build
 
-# Java
-
-ifdef SETTINGS_XML
-DOCKER_RUN_OPTS = -v $(SETTINGS_XML):$(SETTINGS_XML)
-DOCKER_RUN_OPTS += -e SETTINGS_XML=$(SETTINGS_XML)
-endif
-
-ifdef LOCAL_BUILD
-DOCKER_RUN_OPTS += -v $$HOME/.m2:/home/$(UNAME)/.m2:rw
-endif
-
-COMMIT_HASH := $(shell git --no-pager log -1 --pretty=format:"%h")
-NUMBER_COMMITS := $(shell git rev-list --count HEAD)
-
-JAVA_PKG_VERSION := 1.$(NUMBER_COMMITS)-$(COMMIT_HASH)
-
-ifdef BRANCH_NAME
-ifeq "$(findstring epic,$(BRANCH_NAME))" "epic"
-JAVA_PKG_VERSION := $(JAVA_PKG_VERSION)-epic
-endif
-endif
-
-MVN = mvn -s $(SETTINGS_XML) -Dpath_to_thrift="$(THRIFT)" -Dcommit.number="$(NUMBER_COMMITS)"
-
-java.compile: java.settings
-	$(MVN) compile
-
-java.deploy: java.settings
-	$(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
-	$(MVN) deploy
-
-java.install: java.settings
-	$(MVN) clean && \
-	$(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
-	$(MVN) install
-
-java.settings:
-	$(if $(SETTINGS_XML),, echo "SETTINGS_XML not defined"; exit 1)
+include $(UTILS_PATH)/make_lib/java_proto.mk
