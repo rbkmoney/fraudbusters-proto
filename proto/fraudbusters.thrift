@@ -165,6 +165,7 @@ struct Payment {
     7:  required PaymentStatus status
     8:  optional Error error
     9:  required ClientInfo client_info
+   10:  optional domain.BankCardTokenProvider token_provider
 }
 
 enum RefundStatus {
@@ -183,6 +184,7 @@ struct Refund {
     8:  required RefundStatus status
     9:  optional Error error
     10:  required ClientInfo client_info
+    11:  optional domain.BankCardTokenProvider token_provider
 }
 
 enum ChargebackStatus {
@@ -210,6 +212,7 @@ struct Chargeback {
     9:  required ChargebackCategory category
     10:  required string chargeback_code
     11:  required ClientInfo client_info
+    12:  optional domain.BankCardTokenProvider token_provider
 }
 
 /**
