@@ -114,7 +114,9 @@ enum PaymentStatus {
 
 struct FraudInfo {
     1: required ID tempalte_id
-    2: optional string  description
+    2: optional string description
+    3: optional string check_status
+    4: optional string type
 }
 
 struct FraudPayment {
@@ -123,10 +125,9 @@ struct FraudPayment {
     3:  required ReferenceInfo reference_info 
     5:  required domain.Cash cost
     6:  required domain.Payer payer
-    7:  required PaymentStatus status
-    8:  optional string rrn
-    9:  optional domain.PaymentRoute route
-    10: required FraudInfo fraud_info
+    7:  optional string rrn
+    8:  optional domain.PaymentRoute route
+    9: required FraudInfo fraud_info
 }
 
 struct ProviderInfo {
