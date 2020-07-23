@@ -28,6 +28,7 @@ union CommandBody {
 struct Command {
     1: required CommandType command_type
     2: required CommandBody command_body
+    3: required base.Timestamp command_time
 }
 
 // Модель шаблона
