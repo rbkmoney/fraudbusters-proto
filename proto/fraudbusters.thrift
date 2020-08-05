@@ -174,6 +174,8 @@ struct Payment {
     8:  optional Error error
     9:  required ClientInfo client_info
    10:  optional PayerType payer_type
+   11:  optional bool mobile
+   12:  optional bool recurrent
 }
 
 enum RefundStatus {
