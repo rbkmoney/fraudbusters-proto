@@ -113,22 +113,11 @@ enum PaymentStatus {
     failed
 }
 
-struct FraudInfo {
-    1: required ID tempalte_id
-    2: optional string description
-    3: optional string check_status
-    4: optional string type
-}
-
 struct FraudPayment {
     1:  required ID id
     2:  required base.Timestamp event_time
-    3:  required ReferenceInfo reference_info 
-    5:  required domain.Cash cost
-    6:  required domain.Payer payer
-    7:  optional string rrn
-    8:  optional domain.PaymentRoute route
-    9: required FraudInfo fraud_info
+    3:  optional string type
+    4:  optional string comment
 }
 
 struct ProviderInfo {
