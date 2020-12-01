@@ -34,7 +34,7 @@ struct Command {
     1: required CommandType command_type
     2: required CommandBody command_body
     3: optional base.Timestamp command_time
-    4: optional UserInfo user_id
+    4: optional UserInfo user_info
 }
 
 // Модель шаблона
