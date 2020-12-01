@@ -24,12 +24,17 @@ union CommandBody {
     6: P2PReference p2p_reference;
 }
 
+// Модель пользователя
+struct UserInfo {
+    1: required ID user_id
+}
+
 // Модель комманды
 struct Command {
     1: required CommandType command_type
     2: required CommandBody command_body
     3: optional base.Timestamp command_time
-    4: optional ID user_id
+    4: optional UserInfo user_id
 }
 
 // Модель шаблона
