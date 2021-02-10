@@ -228,10 +228,20 @@ struct Chargeback {
 struct Withdrawal {
     1:  required ID id
     2:  required base.Timestamp event_time
-    3:  required domain.BankCard destination_bank_card
+    3:  required Resource destination_resource
     4:  required domain.Cash cost
     5:  required WithdrawalStatus status
     6:  required Account account
+}
+
+union Resource {
+    1: domain.BankCard bank_card
+    2: CryptoWallet crypto_wallet
+}
+
+struct CryptoWallet {
+    1: required string id
+    2: required string currency
 }
 
 struct Account {
