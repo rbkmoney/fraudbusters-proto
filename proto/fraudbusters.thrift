@@ -9,6 +9,11 @@ namespace java com.rbkmoney.damsel.fraudbusters
 namespace erlang fraudbusters
 
 typedef string ID
+typedef ID AccountID
+typedef ID IdentityID
+typedef ID WalletID
+typedef i32 ProviderID
+typedef i32 TerminalID
 
 enum CommandType {
     CREATE
@@ -220,6 +225,37 @@ struct Chargeback {
     12:  optional PayerType payer_type
 }
 
+struct Withdrawal {
+    1:  required ID id
+    2:  required base.Timestamp event_time
+    3:  required Resource destination_resource
+    4:  required domain.Cash cost
+    5:  required WithdrawalStatus status
+    6:  required Account account
+}
+
+union Resource {
+    1: domain.BankCard bank_card
+    2: CryptoWallet crypto_wallet
+}
+
+struct CryptoWallet {
+    1: required string id
+    2: required string currency
+}
+
+struct Account {
+    3: required AccountID id
+    1: required IdentityID identity
+    2: required domain.CurrencyRef currency
+}
+
+enum WithdrawalStatus {
+    pending
+    succeeded
+    failed
+}
+
 /**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
 * во избежания дубликатов записей необходимо повторять только записи начиная с вернувшегося ID
@@ -242,6 +278,9 @@ service PaymentService {
     void insertFraudPayments(1: list<FraudPayment> payments)
 
     void insertPayments(1: list<Payment> payments)
+    throws (1: InsertionException ex1)
+
+    void insertWithdrawals(1: list<Withdrawal> payments)
     throws (1: InsertionException ex1)
 
     void insertRefunds(1: list<Refund> refunds)
