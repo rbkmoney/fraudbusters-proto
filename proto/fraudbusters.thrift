@@ -232,6 +232,7 @@ struct Withdrawal {
     4:  required domain.Cash cost
     5:  required WithdrawalStatus status
     6:  required Account account
+    7:  optional Error error
 }
 
 union Resource {
