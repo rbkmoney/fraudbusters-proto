@@ -233,6 +233,7 @@ struct Withdrawal {
     5:  required WithdrawalStatus status
     6:  required Account account
     7:  optional Error error
+    8:  optional ProviderInfo provider_info
 }
 
 union Resource {
