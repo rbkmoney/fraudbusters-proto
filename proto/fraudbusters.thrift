@@ -239,12 +239,27 @@ struct Withdrawal {
 union Resource {
     1: domain.BankCard bank_card
     2: CryptoWallet crypto_wallet
+    3: DigitalWallet digital_wallet
 }
 
 struct CryptoWallet {
     1: required string id
     2: required string currency
 }
+
+/**
+ *  Электронный кошелёк
+ */
+struct DigitalWallet {
+    1: required string id
+    2: optional DigitalData data
+}
+
+union DigitalData {
+    1: DigitalDataWebmoney webmoney
+}
+
+struct DigitalDataWebmoney {}
 
 struct Account {
     3: required AccountID id
