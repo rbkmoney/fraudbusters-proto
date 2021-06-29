@@ -49,11 +49,6 @@
             <artifactId>damsel</artifactId>
             <version>1.431-2f62a8c</version>
         </dependency>
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.1</version>
-        </dependency>
     </dependencies>
 
     <build>
