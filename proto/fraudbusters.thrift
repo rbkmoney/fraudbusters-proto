@@ -252,14 +252,8 @@ struct CryptoWallet {
  */
 struct DigitalWallet {
     1: required string id
-    2: optional DigitalData data
+    2: optional string digital_data_provider
 }
-
-union DigitalData {
-    1: DigitalDataWebmoney webmoney
-}
-
-struct DigitalDataWebmoney {}
 
 struct Account {
     3: required AccountID id
