@@ -267,7 +267,7 @@ enum WithdrawalStatus {
     failed
 }
 
-struct ProcessingResult {
+struct HistoricalData {
     1:  required base.Timestamp event_time
     2:  required MerchantInfo merchant
     3:  required i64 amount
@@ -283,20 +283,57 @@ struct ProcessingResult {
     13: required ProviderInfo provider
 }
 
-struct ResultFilter {
-    1: required string value
-    2: required FilterField field
+struct HistoricalDataResult {
+    1:  required list<HistoricalData> data
+    2:  optional ID continuation_id
 }
 
-enum FilterField {
-    party
-    shop
-    status
-    email
-    provider_country
-    card_token
-    fingerprint
-    terminal
+struct PartyFilter {
+  1: required string pattern
+}
+
+struct ShopFilter {
+  1: required string pattern
+}
+
+struct StatusFilter {
+  1: required string pattern
+}
+
+struct EmailFilter {
+  1: required string pattern
+}
+
+struct ProviderCountryFilter {
+  1: required string pattern
+}
+
+struct CardTokenFilter {
+  1: required string pattern
+}
+
+struct FingerprintFilter {
+  1: required string pattern
+}
+
+struct TerminalFilter {
+  1: required string pattern
+}
+
+union Filter {
+    1: PartyFilter party
+    2: ShopFilter shop
+    3: StatusFilter status
+    4: EmailFilter email
+    5: ProviderCountryFilter provider_country
+    6: CardTokenFilter card_token
+    7: FingerprintFilter fingerprint
+    8: TerminalFilter terminal
+}
+
+struct Page {
+    1: required i64 size
+    2: optional ID continuation_id
 }
 
 /**
@@ -347,18 +384,13 @@ service P2PService {
 }
 
 /**
-* Интерфейс для получения результатов процессинга
+* Интерфейс для получения иторических данных
 */
-service ProcessingResultService {
+service HistoricalDataService {
 
     /**
-    * Получение всех результатов
+    * Получение исторических данных
     **/
-    ProcessingResult getResult()
-
-    /**
-    * Получение результатов по фильтру
-    **/
-    ProcessingResult getFilteredResult(1: list<ResultFilter> filters)
+    HistoricalDataResult getData(1: Filter filter, 2: Page page)
 
 }
