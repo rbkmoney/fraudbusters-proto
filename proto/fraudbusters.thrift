@@ -267,6 +267,38 @@ enum WithdrawalStatus {
     failed
 }
 
+struct ProcessingResult {
+    1:  required base.Timestamp event_time
+    2:  required MerchantInfo merchant
+    3:  required i64 amount
+    4:  required domain.CurrencyRef currency
+    5:  required ID id
+    6:  optional domain.Token card_token
+    7:  optional ClientInfo client
+    8:  required string status
+    9:  required Error error
+    10: required domain.BankCardPaymentSystem payment_system
+    11: required string payment_country
+    12: required string payment_tool
+    13: required ProviderInfo provider
+}
+
+struct ResultFilter {
+    1: required string value
+    2: required FilterField field
+}
+
+enum FilterField {
+    party
+    shop
+    status
+    email
+    provider_country
+    card_token
+    fingerprint
+    terminal
+}
+
 /**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
 * во избежания дубликатов записей необходимо повторять только записи начиная с вернувшегося ID
@@ -311,5 +343,22 @@ service P2PService {
     * Проверяет компиляцию шаблонов на актуальной версии языка
     **/
     ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
+
+}
+
+/**
+* Интерфейс для получения результатов процессинга
+*/
+service ProcessingResultService {
+
+    /**
+    * Получение всех результатов
+    **/
+    ProcessingResult getResult()
+
+    /**
+    * Получение результатов по фильтру
+    **/
+    ProcessingResult getFilteredResult(1: list<ResultFilter> filters)
 
 }
