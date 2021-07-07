@@ -267,7 +267,7 @@ enum WithdrawalStatus {
     failed
 }
 
-struct HistoricalData {
+struct PaymentInfo {
     1:  required base.Timestamp event_time
     2:  required MerchantInfo merchant
     3:  required i64 amount
@@ -283,52 +283,20 @@ struct HistoricalData {
     13: required ProviderInfo provider
 }
 
-struct HistoricalDataResult {
-    1:  required list<HistoricalData> data
+struct PaymentInfoResult {
+    1:  required list<PaymentInfo> payments
     2:  optional ID continuation_id
 }
 
-struct PartyFilter {
-  1: required string pattern
-}
-
-struct ShopFilter {
-  1: required string pattern
-}
-
-struct StatusFilter {
-  1: required string pattern
-}
-
-struct EmailFilter {
-  1: required string pattern
-}
-
-struct ProviderCountryFilter {
-  1: required string pattern
-}
-
-struct CardTokenFilter {
-  1: required string pattern
-}
-
-struct FingerprintFilter {
-  1: required string pattern
-}
-
-struct TerminalFilter {
-  1: required string pattern
-}
-
-union Filter {
-    1: PartyFilter party
-    2: ShopFilter shop
-    3: StatusFilter status
-    4: EmailFilter email
-    5: ProviderCountryFilter provider_country
-    6: CardTokenFilter card_token
-    7: FingerprintFilter fingerprint
-    8: TerminalFilter terminal
+struct Filter {
+    1: optional string party
+    2: optional string shop
+    3: optional string status
+    4: optional string email
+    5: optional string provider_country
+    6: optional string card_token
+    7: optional string fingerprint
+    8: optional string terminal
 }
 
 struct Page {
@@ -391,6 +359,6 @@ service HistoricalDataService {
     /**
     * Получение исторических данных
     **/
-    HistoricalDataResult getData(1: Filter filter, 2: Page page)
+    PaymentInfoResult getPayments(1: Filter filter, 2: Page page)
 
 }
