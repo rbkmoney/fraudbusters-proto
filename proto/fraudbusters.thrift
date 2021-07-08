@@ -268,14 +268,14 @@ enum WithdrawalStatus {
 }
 
 struct PaymentInfo {
-    1:  required base.Timestamp event_time
-    2:  required MerchantInfo merchant
-    3:  required i64 amount
-    4:  required domain.CurrencyRef currency
-    5:  required ID id
+    1:  required ID id
+    2:  required base.Timestamp event_time
+    3:  required MerchantInfo merchant_info
+    4:  required i64 amount
+    5:  required domain.CurrencyRef currency
     6:  optional domain.Token card_token
-    7:  optional ClientInfo client
-    8:  required string status
+    7:  optional ClientInfo client_info
+    8:  required PaymentStatus status
     9:  required Error error
     10: required domain.BankCardPaymentSystem payment_system
     11: required string payment_country
@@ -289,14 +289,15 @@ struct PaymentInfoResult {
 }
 
 struct Filter {
-    1: optional string party
-    2: optional string shop
-    3: optional string status
-    4: optional string email
-    5: optional string provider_country
-    6: optional string card_token
-    7: optional string fingerprint
-    8: optional string terminal
+    1: optional string party_id
+    2: optional string shop_id
+    3: optional string payment_id
+    4: optional string status
+    5: optional string email
+    6: optional string provider_country
+    7: optional string card_token
+    8: optional string fingerprint
+    9: optional string terminal
 }
 
 struct Page {
