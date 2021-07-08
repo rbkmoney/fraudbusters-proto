@@ -267,6 +267,44 @@ enum WithdrawalStatus {
     failed
 }
 
+struct PaymentInfo {
+    1:  required ID id
+    2:  required base.Timestamp event_time
+    3:  required MerchantInfo merchant_info
+    4:  required i64 amount
+    5:  required domain.CurrencyRef currency
+    6:  optional domain.Token card_token
+    7:  optional ClientInfo client_info
+    8:  required PaymentStatus status
+    9:  required Error error
+    10: required domain.BankCardPaymentSystem payment_system
+    11: required string payment_country
+    12: required string payment_tool
+    13: required ProviderInfo provider
+}
+
+struct PaymentInfoResult {
+    1:  required list<PaymentInfo> payments
+    2:  optional ID continuation_id
+}
+
+struct Filter {
+    1: optional string party_id
+    2: optional string shop_id
+    3: optional string payment_id
+    4: optional string status
+    5: optional string email
+    6: optional string provider_country
+    7: optional string card_token
+    8: optional string fingerprint
+    9: optional string terminal
+}
+
+struct Page {
+    1: required i64 size
+    2: optional ID continuation_id
+}
+
 /**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
 * во избежания дубликатов записей необходимо повторять только записи начиная с вернувшегося ID
@@ -311,5 +349,17 @@ service P2PService {
     * Проверяет компиляцию шаблонов на актуальной версии языка
     **/
     ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
+
+}
+
+/**
+* Интерфейс для получения иторических данных
+*/
+service HistoricalDataService {
+
+    /**
+    * Получение исторических данных по платежам
+    **/
+    PaymentInfoResult getPayments(1: Filter filter, 2: Page page)
 
 }
