@@ -358,7 +358,7 @@ service P2PService {
 service HistoricalDataService {
 
     /**
-    * Получение исторических данных
+    * Получение исторических данных по платежам
     **/
     PaymentInfoResult getPayments(1: Filter filter, 2: Page page)
 
