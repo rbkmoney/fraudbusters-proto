@@ -272,12 +272,12 @@ struct PaymentInfo {
     2:  required base.Timestamp event_time
     3:  required MerchantInfo merchant_info
     4:  required i64 amount
-    5:  required domain.CurrencyRef currency
-    6:  optional domain.Token card_token
+    5:  required string currency
+    6:  optional string card_token
     7:  optional ClientInfo client_info
     8:  required PaymentStatus status
     9:  required Error error
-    10: required domain.BankCardPaymentSystem payment_system
+    10: required string payment_system
     11: required string payment_country
     12: required string payment_tool
     13: required ProviderInfo provider
