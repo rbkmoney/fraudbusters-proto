@@ -298,6 +298,7 @@ struct Filter {
     7: optional string card_token
     8: optional string fingerprint
     9: optional string terminal
+    10: optional base.TimestampInterval interval
 }
 
 struct Page {
