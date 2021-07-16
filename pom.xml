@@ -41,13 +41,13 @@
         <dependency>
             <groupId>com.rbkmoney.woody</groupId>
             <artifactId>woody-thrift</artifactId>
-            <version>LATEST</version>
+            <version>1.1.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>damsel</artifactId>
-            <version>1.431-2f62a8c</version>
+            <version>1.500-da04d2c</version>
         </dependency>
     </dependencies>
 
