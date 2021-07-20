@@ -306,6 +306,16 @@ struct Page {
     2: optional ID continuation_id
 }
 
+struct Sort {
+    1: optional SortOrder order
+    2: optional string field
+}
+
+enum SortOrder {
+    ASC
+    DESC
+}
+
 /**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
 * во избежания дубликатов записей необходимо повторять только записи начиная с вернувшегося ID
@@ -361,6 +371,6 @@ service HistoricalDataService {
     /**
     * Получение исторических данных по платежам
     **/
-    PaymentInfoResult getPayments(1: Filter filter, 2: Page page)
+    PaymentInfoResult getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
 
 }
