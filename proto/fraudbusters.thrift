@@ -307,8 +307,13 @@ struct Page {
 }
 
 struct Sort {
-    1: optional string order
+    1: optional SortOrder order
     2: optional string field
+}
+
+enum SortOrder {
+    ASC
+    DESC
 }
 
 /**
