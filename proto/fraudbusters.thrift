@@ -463,6 +463,6 @@ service HistoricalDataService {
     * Применение нового правила к историческим данным
     **/
     HistoricalDataSetCheckResult applyRuleOnHistoricalDataSet(1: ApplyRulesOnHistoricalDataRequest request)
-     throws (1: HistoricalDataServiceException exception)
+     throws (1: HistoricalDataServiceException ex)
 
 }
