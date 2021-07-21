@@ -348,7 +348,7 @@ struct CascasdingTemplateEmulation {
 /**
 * Запрос на применение нового правила на наборе исторических данных
 **/
-struct ApplyRulesOnHistoricalDataRequest {
+struct EmulationRuleApplyRequest {
     1: required EmulationRule emulation_rule
     2: required set<PaymentInfo> transactions
 }
@@ -462,7 +462,7 @@ service HistoricalDataService {
     /**
     * Применение нового правила к историческим данным
     **/
-    HistoricalDataSetCheckResult applyRuleOnHistoricalDataSet(1: ApplyRulesOnHistoricalDataRequest request)
+    HistoricalDataSetCheckResult applyRuleOnHistoricalDataSet(1: EmulationRuleApplyRequest request)
      throws (1: HistoricalDataServiceException ex)
 
 }
