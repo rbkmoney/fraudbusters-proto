@@ -308,6 +308,16 @@ struct Page {
     2: optional ID continuation_id
 }
 
+struct Sort {
+    1: optional SortOrder order
+    2: optional string field
+}
+
+enum SortOrder {
+    ASC
+    DESC
+}
+
 /**
 * Дополнительное правило для проверке на наборе данных
 **/
@@ -446,7 +456,7 @@ service HistoricalDataService {
     /**
     * Получение исторических данных по платежам
     **/
-    PaymentInfoResult getPayments(1: Filter filter, 2: Page page)
+    PaymentInfoResult getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
 
 
     /**
