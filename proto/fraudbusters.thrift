@@ -59,6 +59,7 @@ struct TemplateReference {
     // Идентификатор привязываемого шаблона
     3: required ID template_id
     // Признак глобальности (при значении true поля party_id и shop_id игнорируются)
+    // DEPRECATED
     4: required bool is_global = false
 }
 
@@ -69,6 +70,7 @@ struct P2PReference {
     // Идентификатор привязываемого шаблона
     2: required ID template_id
     // Признак глобальности (при значении true поля identity_id игнорируются)
+    // DEPRECATED
     3: required bool is_global = false
 }
 
@@ -307,12 +309,95 @@ struct Page {
 }
 
 /**
+* Дополнительное правило для проверке на наборе данных
+**/
+union EmulationRule {
+    1: OnlyTemplateEmulation template_emulation
+    2: CascasdingTemplateEmulation cascading_emulation
+}
+
+/**
+* Проверка только одного правила на наборе данных
+**/
+struct OnlyTemplateEmulation {
+    1: Template template
+}
+
+/**
+* Проверка правила в структуре других правил на момент времени
+**/
+struct CascasdingTemplateEmulation {
+    1: Template template
+    2: TemplateReference ref
+    // Временная метка для выбора применяемого набора правил
+    // если указана, то ко всем транзакциям будет применен один набор правил на указанный момент времени,
+    // если не указана, то для каждой транзакции будет выбран соответствующий набор правил.
+    3: optional base.Timestamp rule_set_timestamp
+}
+
+/**
+* Запрос на применение нового правила на наборе исторических данных
+**/
+struct ApplyRulesOnHistoricalDataRequest {
+    1: required EmulationRule emulation_rule
+    2: required set<PaymentInfo> transactions
+}
+
+union ResultStatus {
+    1: Accept accept
+    2: AcceptAndNotify accept_and_notify
+    3: ThreeDs three_ds
+    4: Decline decline
+    5: DeclineAndNotify decline_and_notify
+    6: HighRisk high_risk
+    7: Normal normal
+    8: Notify notify
+}
+
+struct Accept {}
+struct AcceptAndNotify {}
+struct ThreeDs {}
+struct Decline {}
+struct DeclineAndNotify {}
+struct HighRisk {}
+struct Normal {}
+struct Notify {}
+
+struct ConcreteCheckResult {
+    1: required ResultStatus result_status
+    2: required string rule_checked;
+    3: required list<string> notifications_rule;
+}
+
+struct CheckResult {
+    1: required string checked_template
+    2: required ConcreteCheckResult concrete_check_result
+}
+
+struct HistoricalTransactionCheck {
+    1: required PaymentInfo transaction
+    2: required CheckResult check_result
+}
+
+struct HistoricalDataSetCheckResult {
+    1: required set<HistoricalTransactionCheck> historical_transaction_check
+}
+
+/**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
 * во избежания дубликатов записей необходимо повторять только записи начиная с вернувшегося ID
 */
 exception InsertionException {
     1: ID id
     2: string reason
+}
+
+/**
+* Общее исключение сервиса работы с историческими данными
+**/
+exception HistoricalDataServiceException {
+    1: optional i32 code
+    2: optional string reason
 }
 
 /**
@@ -354,7 +439,7 @@ service P2PService {
 }
 
 /**
-* Интерфейс для получения иторических данных
+* Интерфейс для работы с историческими данными
 */
 service HistoricalDataService {
 
@@ -362,5 +447,12 @@ service HistoricalDataService {
     * Получение исторических данных по платежам
     **/
     PaymentInfoResult getPayments(1: Filter filter, 2: Page page)
+
+
+    /**
+    * Применение нового правила к историческим данным
+    **/
+    HistoricalDataSetCheckResult applyRuleOnHistoricalDataSet(1: ApplyRulesOnHistoricalDataRequest request)
+     throws (1: HistoricalDataServiceException exception)
 
 }
