@@ -275,10 +275,10 @@ struct PaymentInfo {
     3:  required MerchantInfo merchant_info
     4:  required i64 amount
     5:  required string currency
-    6:  optional string card_token
+    6:  required string card_token
     7:  optional ClientInfo client_info
     8:  required PaymentStatus status
-    9:  required Error error
+    9:  optional Error error
     10: required string payment_system
     11: required string payment_country
     12: required string payment_tool
@@ -301,6 +301,8 @@ struct Filter {
     8: optional string fingerprint
     9: optional string terminal
     10: optional base.TimestampInterval interval
+    11: optional string invoice_id
+    12: optional string masked_pan
 }
 
 struct Page {
@@ -316,6 +318,68 @@ struct Sort {
 enum SortOrder {
     ASC
     DESC
+}
+
+struct FraudResult {
+    1:  required ID payment_id
+    2:  required base.Timestamp event_time
+    3:  required MerchantInfo merchant_info
+    4:  required i64 amount
+    5:  required string currency
+    6:  required string card_token
+    7:  required string card
+    8:  optional ClientInfo client_info
+    11: required string bank_country
+    12: required PayerType payer_type
+    13: required string bank_name
+    14: required string country
+    15: required ResultStatus result_status
+    16: optional string checked_rule
+    17: required string checked_template
+    18: optional string token_provider
+}
+
+struct FraudResultResult {
+    1:  required list<FraudResult> fraud_results
+    2:  optional ID continuation_id
+}
+
+struct RefundInfo {
+    1:  required ID id
+    2:  required base.Timestamp event_time
+    3:  required MerchantInfo merchant_info
+    4:  required i64 amount
+    5:  required string currency
+    6:  required ProviderInfo provider_info
+    7:  required RefundStatus status
+    8:  optional Error error
+    9:  required ClientInfo client_info
+    10: required string payment_system
+    11: required string card_token
+}
+
+struct RefundInfoResult {
+    1:  required list<RefundInfo> refunds
+    2:  optional ID continuation_id
+}
+
+struct ChargebackInfo {
+    1:  required ID id
+    2:  required ID payment_id
+    3:  required base.Timestamp event_time
+    4:  required MerchantInfo merchant_info
+    5:  required i64 amount
+    6:  required string currency
+    7:  required ProviderInfo provider_info
+    8:  required ChargebackStatus status
+    9:  required ClientInfo client_info
+    10: required string payment_system
+    11: required string card_token
+}
+
+struct ChargebackInfoResult {
+    1:  required list<ChargebackInfo> chargebacks
+    2:  optional ID continuation_id
 }
 
 /**
@@ -457,6 +521,21 @@ service HistoricalDataService {
     * Получение исторических данных по платежам
     **/
     PaymentInfoResult getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
+
+    /**
+    * Получение исторических данных по результатам работы антифрода
+    **/
+    FraudResultResult getFraudResult(1: Filter filter, 2: Page page, 3: Sort sort)
+
+    /**
+    * Получение исторических данных по возвратам
+    **/
+    RefundInfoResult getRefunds(1: Filter filter, 2: Page page, 3: Sort sort)
+
+    /**
+    * Получение исторических данных по возвратным платежам
+    **/
+    ChargebackInfoResult getChargebacks(1: Filter filter, 2: Page page, 3: Sort sort)
 
 
     /**
