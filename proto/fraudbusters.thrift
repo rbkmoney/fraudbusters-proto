@@ -525,7 +525,7 @@ service HistoricalDataService {
     /**
     * Получение исторических данных по результатам работы антифрода
     **/
-    FraudResultResult getFraudResult(1: Filter filter, 2: Page page, 3: Sort sort)
+    FraudResultResult getFraudResults(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Получение исторических данных по возвратам
@@ -536,7 +536,6 @@ service HistoricalDataService {
     * Получение исторических данных по возвратным платежам
     **/
     ChargebackInfoResult getChargebacks(1: Filter filter, 2: Page page, 3: Sort sort)
-
 
     /**
     * Применение нового правила к историческим данным
