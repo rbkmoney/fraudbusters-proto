@@ -269,27 +269,6 @@ enum WithdrawalStatus {
     failed
 }
 
-struct PaymentInfo {
-    1:  required ID id
-    2:  required base.Timestamp event_time
-    3:  required MerchantInfo merchant_info
-    4:  required i64 amount
-    5:  required string currency
-    6:  optional string card_token
-    7:  optional ClientInfo client_info
-    8:  required PaymentStatus status
-    9:  required Error error
-    10: required string payment_system
-    11: required string payment_country
-    12: required string payment_tool
-    13: required ProviderInfo provider
-}
-
-struct PaymentInfoResult {
-    1:  required list<PaymentInfo> payments
-    2:  optional ID continuation_id
-}
-
 struct Filter {
     1: optional string party_id
     2: optional string shop_id
@@ -301,6 +280,8 @@ struct Filter {
     8: optional string fingerprint
     9: optional string terminal
     10: optional base.TimestampInterval interval
+    11: optional string invoice_id
+    12: optional string masked_pan
 }
 
 struct Page {
@@ -316,6 +297,12 @@ struct Sort {
 enum SortOrder {
     ASC
     DESC
+}
+
+struct Transaction {
+    1:  required Payment payment
+    2:  required string country
+    3:  required string bank_name
 }
 
 /**
@@ -350,7 +337,7 @@ struct CascasdingTemplateEmulation {
 **/
 struct EmulationRuleApplyRequest {
     1: required EmulationRule emulation_rule
-    2: required set<PaymentInfo> transactions
+    2: required set<Payment> transactions
 }
 
 union ResultStatus {
@@ -385,13 +372,29 @@ struct CheckResult {
 }
 
 struct HistoricalTransactionCheck {
-    1: required PaymentInfo transaction
+    1: required Transaction transaction
     2: required CheckResult check_result
 }
 
 struct HistoricalDataSetCheckResult {
     1: required set<HistoricalTransactionCheck> historical_transaction_check
 }
+
+union HistoricalData {
+   1: list<Payment> payments
+   2: list<Refund> refunds
+   3: list<Chargeback> chargebacks
+   4: list<HistoricalTransactionCheck> fraud_results
+}
+
+/**
+*  Общий ответ для получения исторических данных
+*/
+struct HistoricalDataResponse {
+    1:  required HistoricalData data
+    2:  optional ID continuation_id
+}
+
 
 /**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
@@ -456,8 +459,22 @@ service HistoricalDataService {
     /**
     * Получение исторических данных по платежам
     **/
-    PaymentInfoResult getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
+    HistoricalDataResponse getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
 
+    /**
+    * Получение исторических данных по результатам работы антифрода
+    **/
+    HistoricalDataResponse getFraudResults(1: Filter filter, 2: Page page, 3: Sort sort)
+
+    /**
+    * Получение исторических данных по возвратам
+    **/
+    HistoricalDataResponse getRefunds(1: Filter filter, 2: Page page, 3: Sort sort)
+
+    /**
+    * Получение исторических данных по возвратным платежам
+    **/
+    HistoricalDataResponse getChargebacks(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Применение нового правила к историческим данным
