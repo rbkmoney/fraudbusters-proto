@@ -269,27 +269,6 @@ enum WithdrawalStatus {
     failed
 }
 
-struct PaymentInfo {
-    1:  required ID id
-    2:  required base.Timestamp event_time
-    3:  required MerchantInfo merchant_info
-    4:  required i64 amount
-    5:  required string currency
-    6:  required string card_token
-    7:  optional ClientInfo client_info
-    8:  required PaymentStatus status
-    9:  optional Error error
-    10: required string payment_system
-    11: required string payment_country
-    12: required string payment_tool
-    13: required ProviderInfo provider
-}
-
-struct PaymentInfoResult {
-    1:  required list<PaymentInfo> payments
-    2:  optional ID continuation_id
-}
-
 struct Filter {
     1: optional string party_id
     2: optional string shop_id
@@ -320,66 +299,10 @@ enum SortOrder {
     DESC
 }
 
-struct FraudResult {
-    1:  required ID payment_id
-    2:  required base.Timestamp event_time
-    3:  required MerchantInfo merchant_info
-    4:  required i64 amount
-    5:  required string currency
-    6:  required string card_token
-    7:  required string card
-    8:  optional ClientInfo client_info
-    11: required string bank_country
-    12: required PayerType payer_type
-    13: required string bank_name
-    14: required string country
-    15: required ResultStatus result_status
-    16: optional string checked_rule
-    17: required string checked_template
-    18: optional string token_provider
-}
-
-struct FraudResultResult {
-    1:  required list<FraudResult> fraud_results
-    2:  optional ID continuation_id
-}
-
-struct RefundInfo {
-    1:  required ID id
-    2:  required base.Timestamp event_time
-    3:  required MerchantInfo merchant_info
-    4:  required i64 amount
-    5:  required string currency
-    6:  required ProviderInfo provider_info
-    7:  required RefundStatus status
-    8:  optional Error error
-    9:  required ClientInfo client_info
-    10: required string payment_system
-    11: required string card_token
-}
-
-struct RefundInfoResult {
-    1:  required list<RefundInfo> refunds
-    2:  optional ID continuation_id
-}
-
-struct ChargebackInfo {
-    1:  required ID id
-    2:  required ID payment_id
-    3:  required base.Timestamp event_time
-    4:  required MerchantInfo merchant_info
-    5:  required i64 amount
-    6:  required string currency
-    7:  required ProviderInfo provider_info
-    8:  required ChargebackStatus status
-    9:  required ClientInfo client_info
-    10: required string payment_system
-    11: required string card_token
-}
-
-struct ChargebackInfoResult {
-    1:  required list<ChargebackInfo> chargebacks
-    2:  optional ID continuation_id
+struct Transaction {
+    1:  required Payment payment
+    2:  required string country
+    3:  required string bank_name
 }
 
 /**
@@ -414,7 +337,7 @@ struct CascasdingTemplateEmulation {
 **/
 struct EmulationRuleApplyRequest {
     1: required EmulationRule emulation_rule
-    2: required set<PaymentInfo> transactions
+    2: required set<Payment> transactions
 }
 
 union ResultStatus {
@@ -449,13 +372,29 @@ struct CheckResult {
 }
 
 struct HistoricalTransactionCheck {
-    1: required PaymentInfo transaction
+    1: required Transaction transaction
     2: required CheckResult check_result
 }
 
 struct HistoricalDataSetCheckResult {
     1: required set<HistoricalTransactionCheck> historical_transaction_check
 }
+
+union HistoricalData {
+   1: list<Payment> payments
+   2: list<Refund> refunds
+   3: list<Chargeback> chargebacks
+   4: list<HistoricalTransactionCheck> fraud_results
+}
+
+/**
+*  Общий ответ для получения исторических данных
+*/
+struct HistoricalDataResponse {
+    1:  required HistoricalData data
+    2:  optional ID continuation_id
+}
+
 
 /**
 * Исключение при вставке, в id приходит идентификатор записи из батча, начиная с которой записи не вставились
@@ -520,22 +459,22 @@ service HistoricalDataService {
     /**
     * Получение исторических данных по платежам
     **/
-    PaymentInfoResult getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
+    HistoricalDataResponse getPayments(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Получение исторических данных по результатам работы антифрода
     **/
-    FraudResultResult getFraudResults(1: Filter filter, 2: Page page, 3: Sort sort)
+    HistoricalDataResponse getFraudResults(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Получение исторических данных по возвратам
     **/
-    RefundInfoResult getRefunds(1: Filter filter, 2: Page page, 3: Sort sort)
+    HistoricalDataResponse getRefunds(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Получение исторических данных по возвратным платежам
     **/
-    ChargebackInfoResult getChargebacks(1: Filter filter, 2: Page page, 3: Sort sort)
+    HistoricalDataResponse getChargebacks(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Применение нового правила к историческим данным
