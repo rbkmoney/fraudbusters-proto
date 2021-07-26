@@ -299,12 +299,6 @@ enum SortOrder {
     DESC
 }
 
-struct Transaction {
-    1:  required Payment payment
-    2:  required string country
-    3:  required string bank_name
-}
-
 /**
 * Дополнительное правило для проверке на наборе данных
 **/
@@ -372,7 +366,7 @@ struct CheckResult {
 }
 
 struct HistoricalTransactionCheck {
-    1: required Transaction transaction
+    1: required Payment transaction
     2: required CheckResult check_result
 }
 
@@ -385,6 +379,7 @@ union HistoricalData {
    2: list<Refund> refunds
    3: list<Chargeback> chargebacks
    4: list<HistoricalTransactionCheck> fraud_results
+   5: list<Payment> fraud_payments
 }
 
 /**
@@ -475,6 +470,11 @@ service HistoricalDataService {
     * Получение исторических данных по возвратным платежам
     **/
     HistoricalDataResponse getChargebacks(1: Filter filter, 2: Page page, 3: Sort sort)
+
+    /**
+    * Получение исторических данных по мошенническим платежам
+    **/
+    HistoricalDataResponse getFraudPayments(1: Filter filter, 2: Page page, 3: Sort sort)
 
     /**
     * Применение нового правила к историческим данным
