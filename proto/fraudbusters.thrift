@@ -269,6 +269,12 @@ enum WithdrawalStatus {
     failed
 }
 
+struct FraudPaymentInfo {
+    1:  required Payment payment
+    3:  optional string type
+    4:  optional string comment
+}
+
 struct Filter {
     1: optional string party_id
     2: optional string shop_id
@@ -379,7 +385,7 @@ union HistoricalData {
    2: list<Refund> refunds
    3: list<Chargeback> chargebacks
    4: list<HistoricalTransactionCheck> fraud_results
-   5: list<Payment> fraud_payments
+   5: list<FraudPaymentInfo> fraud_payments
 }
 
 /**
