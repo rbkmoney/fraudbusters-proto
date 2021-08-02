@@ -121,8 +121,10 @@ struct TemplateValidateError {
 }
 
 enum PaymentStatus {
+    pending
     processed
     captured
+    cancelled
     failed
 }
 
