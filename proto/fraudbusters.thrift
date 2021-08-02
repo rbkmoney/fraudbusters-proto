@@ -126,6 +126,7 @@ enum PaymentStatus {
     captured
     cancelled
     failed
+    unknown
 }
 
 struct FraudPayment {
