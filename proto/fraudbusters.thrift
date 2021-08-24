@@ -365,8 +365,8 @@ struct Notify {}
 
 struct ConcreteCheckResult {
     1: required ResultStatus result_status
-    2: required string rule_checked;
-    3: required list<string> notifications_rule;
+    2: optional string rule_checked;
+    3: optional list<string> notifications_rule;
 }
 
 struct CheckResult {
