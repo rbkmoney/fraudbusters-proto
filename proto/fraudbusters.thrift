@@ -25,6 +25,8 @@ union CommandBody {
     2: TemplateReference reference;
     3: GroupReference group_reference;
     4: Group group;
+
+    // P2P is DEPRECATED and may not be supported
     5: P2PGroupReference p2p_group_reference;
     6: P2PReference p2p_reference;
 }
@@ -63,6 +65,7 @@ struct TemplateReference {
     4: required bool is_global = false
 }
 
+// P2P is DEPRECATED and may not be supported
 // Модель связки шаблона с проверяемым субъектом
 struct P2PReference {
     // Идентификатор кошелька
@@ -84,7 +87,7 @@ struct GroupReference {
     3: required ID group_id
 }
 
-
+// P2P is DEPRECATED and may not be supported
 // Модель связки шаблона с проверяемым субъектом
 struct P2PGroupReference {
     // Идентификатор кошелька
@@ -440,18 +443,6 @@ service PaymentService {
 
     void insertChargebacks(1: list<Chargeback> chargebacks)
     throws (1: InsertionException ex1)
-
-}
-
-/**
-* Интерфейс для управления FraudoP2P
-*/
-service P2PService {
-
-    /**
-    * Проверяет компиляцию шаблонов на актуальной версии языка
-    **/
-    ValidateTemplateResponse validateCompilationTemplate(1: list<Template> templates)
 
 }
 
